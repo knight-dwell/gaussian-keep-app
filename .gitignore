@@ -1,0 +1,8 @@
+# never published: the APK signing key (Android only accepts updates signed with the same key)
+android/signing/
+*.jks
+# build output (APK goes to GitHub Releases instead)
+android/build/
+*.apk
+__pycache__/
+*.pyc

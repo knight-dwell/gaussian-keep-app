@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<title>gaussian_keep</title>
+<link rel="stylesheet" href="/web/app.css">
+<link rel="stylesheet" href="/web/material.css">
+</head>
+<body>
+<nav id="rail">
+  <div class="brand" title="gaussian_keep">𝒢</div>
+  <button data-view="notes"     title="Notes (Ctrl+1)"><span class="ms">description</span>Notes</button>
+  <button data-view="planner"   title="Planner (Ctrl+2)"><span class="ms">calendar_month</span>Planner</button>
+  <button data-view="organizer" title="Organizer (Ctrl+3)"><span class="ms">dashboard</span>Organizer</button>
+  <button data-view="journal"   title="Research journal (Ctrl+4)"><span class="ms">menu_book</span>Journal</button>
+  <button data-view="reminders" title="Reminders (Ctrl+5)"><span class="ms">notifications</span>Reminders</button>
+  <button data-view="git"       title="Git center (Ctrl+6)"><span class="ms">commit</span>Git</button>
+  <div class="spacer"></div>
+  <button id="sync-toggle" title="Sync with the phone (GitHub)"><span class="ms">cloud_done</span>Sync</button>
+  <button id="theme-toggle" title="Dark / light"><span class="ms">dark_mode</span>Theme</button>
+  <button data-view="settings"  title="Settings (Ctrl+,)"><span class="ms">settings</span>Settings</button>
+</nav>
+
+<main>
+  <!-- ── Notes ─────────────────────────────────────────────────────────── -->
+  <section class="view" id="view-notes">
+    <div id="note-list" class="pane">
+      <div class="pane-head">
+        <h2>Notes</h2><span class="grow"></span>
+        <div class="newmenu">
+          <button class="btn primary" id="new-note-btn"><span class="ms">edit_square</span>New</button>
+          <div class="menu" id="new-menu">
+            <button data-new="keep"><span class="ms">auto_stories</span>Scratchbook</button>
+            <button data-new="md"><span class="ms">markdown</span>Markdown (raw)</button>
+            <button data-new="tex"><span class="ms">functions</span>LaTeX document</button>
+            <button data-new="txt"><span class="ms">notes</span>Plain text</button>
+            <button data-new="pdf"><span class="ms">picture_as_pdf</span>Import a PDF…</button>
+          </div>
+        </div>
+      </div>
+      <input id="note-search" class="field" placeholder="Search notes…  (Ctrl+P)">
+      <div class="filters">
+        <button class="chip on" data-filter="all">all</button>
+        <button class="chip" data-filter="md">md</button>
+        <button class="chip" data-filter="tex">tex</button>
+        <button class="chip" data-filter="txt">txt</button>
+        <button class="chip" data-filter="pdf">pdf</button>
+        <button class="chip" data-filter="keep">scratch</button>
+      </div>
+      <div id="notes"></div>
+    </div>
+
+    <div id="workspace">
+      <div id="editor-pane" class="pane">
+        <div class="pane-head" style="position:relative">
+          <span id="note-type" class="tag"></span>
+          <div id="note-title">—</div>
+          <span class="save-state" id="save-state"></span>
+          <div class="toolbar" id="sb-toolbar">
+            <button class="icon-btn" data-sb="heading" title="Heading">title</button>
+            <button class="icon-btn" data-sb="math" title="Equation">function</button>
+            <button class="icon-btn" data-sb="table" title="Table">table</button>
+            <button class="icon-btn" data-sb="csv" title="Import a table (CSV / spreadsheet)">upload_file</button>
+            <button class="icon-btn" data-sb="code" title="Code block">code_blocks</button>
+            <button class="icon-btn" data-sb="sketch" title="Shapes">shapes</button>
+            <button class="icon-btn" data-sb="quote" title="Quote">format_quote</button>
+            <button class="icon-btn" data-sb="cite" title="Cite a link (URL / DOI / arXiv)">link</button>
+            <button class="icon-btn" data-sb="image" title="Image">image</button>
+            <button class="icon-btn" data-sb="divider" title="Divider">horizontal_rule</button>
+            <button class="icon-btn" id="tb-chars" title="Greek & special characters">Ω</button>
+            <span class="sep"></span>
+          </div>
+          <div class="toolbar" id="md-toolbar">
+            <button class="icon-btn" id="tb-table" title="Insert table">table</button>
+            <button class="icon-btn" id="tb-image" title="Insert image">image</button>
+            <button class="icon-btn" id="tb-math"  title="Insert equation">function</button>
+            <button class="icon-btn" id="tb-chars2" title="Greek & special characters">Ω</button>
+            <span class="sep"></span>
+          </div>
+          <div class="toolbar">
+            <button class="icon-btn" id="tb-compile" title="Compile / render (Ctrl+Enter)">play_arrow</button>
+            <button class="icon-btn on" id="tb-preview" title="Side preview">vertical_split</button>
+            <button class="icon-btn" id="tb-export"  title="Export / open PDF">picture_as_pdf</button>
+            <button class="icon-btn" id="tb-focus"   title="Full screen writing (F11)">fullscreen</button>
+            <button class="icon-btn" id="tb-delete"  title="Move to trash">delete</button>
+          </div>
+          <div id="table-picker"><div id="table-grid"></div><div id="table-size">3 × 3</div></div>
+        </div>
+        <div id="page-wrap">
+          <div id="page">
+            <textarea id="editor" spellcheck="false" placeholder="Start writing…"></textarea>
+            <div id="sb"></div>
+            <div class="pdf-only" id="pdf-view"></div>
+            <div class="page-nav">
+              <button class="icon-btn" id="prev-page" title="Previous page (Alt+←)">chevron_left</button>
+              <span class="page-no" id="page-no"></span>
+              <button class="icon-btn" id="next-page" title="Next page (Alt+→)">chevron_right</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="preview-pane" class="pane">
+        <div class="pane-head"><h2>Preview</h2><span class="grow"></span><span class="muted" id="compile-state"></span></div>
+        <div id="preview" class="typeset"><div class="empty">Ctrl+Enter compiles this note</div></div>
+        <pre id="compile-log"></pre>
+      </div>
+    </div>
+    <input type="file" id="file-image" accept="image/*" hidden>
+    <input type="file" id="file-pdf" accept="application/pdf" hidden>
+  </section>
+
+  <!-- ── Planner ───────────────────────────────────────────────────────── -->
+  <section class="view pane" id="view-planner">
+    <div class="pane-head">
+      <h2 id="plan-title">Today</h2><span class="grow"></span>
+      <button class="icon-btn" id="plan-prev">chevron_left</button>
+      <button class="btn" id="plan-today">Today</button>
+      <button class="icon-btn" id="plan-next">chevron_right</button>
+    </div>
+    <div class="scroll">
+      <div class="week" id="plan-week"></div>
+      <div class="planner-body">
+        <div style="display:flex;flex-direction:column;gap:22px">
+          <div class="card"><h3>Focus of the day</h3><input class="focus-input" id="plan-focus" placeholder="One thing that matters today…"></div>
+          <div class="card"><h3>Tasks</h3><div id="plan-tasks"></div>
+            <input class="field" id="plan-add" placeholder="Add a task… (Enter)   tip: start with 14:30 to give it a time" style="width:100%;margin-top:10px"></div>
+          <div class="card"><h3>Notes</h3><textarea class="field" id="plan-notes" rows="6" style="width:100%;resize:vertical"></textarea></div>
+        </div>
+        <div class="card"><h3>Time blocks</h3><div id="plan-blocks"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Organizer ─────────────────────────────────────────────────────── -->
+  <section class="view pane" id="view-organizer">
+    <div class="pane-head"><h2>Organizer</h2><span class="grow"></span>
+      <input class="field" id="org-search" placeholder="Search cards…" style="width:260px"></div>
+    <div class="scroll">
+      <div class="composer card" id="org-composer">
+        <input class="field" id="org-new-title" placeholder="Take a note…" style="width:100%">
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn" id="org-new-note">Note</button>
+          <button class="btn" id="org-new-list">Checklist</button>
+        </div>
+      </div>
+      <div class="board" id="org-board"></div>
+    </div>
+  </section>
+
+  <!-- ── Journal ───────────────────────────────────────────────────────── -->
+  <section class="view" id="view-journal">
+    <div id="journal-list"></div>
+    <div class="pane" style="flex:1;min-width:0">
+      <div class="pane-head">
+        <h2 id="journal-title">Research journal</h2><span class="grow"></span>
+        <span class="save-state" id="journal-save"></span>
+        <button class="btn ghost" id="journal-template">＋ template</button>
+        <button class="btn ghost" id="journal-today">Today</button>
+        <button class="icon-btn on" id="journal-preview-btn" title="Preview">vertical_split</button>
+      </div>
+      <div style="flex:1;display:flex;min-height:0">
+        <div id="page-wrap-j" style="flex:1;display:flex;padding:22px 26px 16px;perspective:2200px">
+          <div id="jpage" style="flex:1;display:flex;background:var(--paper);border:1px solid var(--paper-edge);border-radius:6px 14px 14px 6px;box-shadow:var(--shadow);transform-origin:left center">
+            <textarea id="journal-editor" class="" spellcheck="false" placeholder="What did you try today? What did you learn?"
+              style="flex:1;resize:none;border:0;outline:none;background:transparent;color:var(--text);padding:40px 56px;font-family:var(--editor-font,'LM Mono Light');line-height:var(--editor-lh,1.75);caret-color:var(--warm)"></textarea>
+          </div>
+        </div>
+        <div id="journal-preview" class="typeset" style="width:44%;overflow:auto;padding:28px 36px;border-left:1px solid var(--line);background:var(--surface)"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Reminders ─────────────────────────────────────────────────────── -->
+  <section class="view pane" id="view-reminders">
+    <div class="pane-head"><h2>Reminders</h2><span class="grow"></span>
+      <span class="muted">shared with the bar calendar · pop up as notifications on time</span></div>
+    <div class="rem-form">
+      <input class="field" type="date" id="rem-date">
+      <input class="field" type="time" id="rem-time" value="09:00">
+      <input class="field" id="rem-text" placeholder="Remind me to…" style="flex:1;min-width:240px">
+      <button class="btn primary" id="rem-add">Add</button>
+    </div>
+    <div class="scroll" id="rem-list"></div>
+  </section>
+
+  <!-- ── Git center ────────────────────────────────────────────────────── -->
+  <section class="view" id="view-git">
+    <div id="repo-list"></div>
+    <div class="pane" style="flex:1;min-width:0">
+      <div class="pane-head">
+        <h2 id="git-title">Git</h2><span class="muted" id="git-branch"></span><span class="grow"></span>
+        <button class="btn" id="git-scan" title="Copy current system configs into config-dump and show what changed">Scan system</button>
+        <button class="btn" id="git-pull">Pull</button>
+        <button class="btn tonal" id="git-push">Push</button>
+      </div>
+      <div class="git-body">
+        <div class="git-files" id="git-files"></div>
+        <div class="pane" style="min-width:0"><pre class="diff" id="git-diff"><span class="empty">Select a file to see what changed</span></pre></div>
+      </div>
+      <div class="git-commit">
+        <input class="field" id="git-msg" placeholder="Commit message (empty = timestamp)" style="flex:1">
+        <button class="btn primary" id="git-commit">Commit all</button>
+      </div>
+      <div class="git-log" id="git-log"></div>
+    </div>
+  </section>
+
+  <!-- ── Settings ──────────────────────────────────────────────────────── -->
+  <section class="view pane" id="view-settings">
+    <div class="pane-head"><h2>Settings</h2></div>
+    <div class="scroll"><div class="settings card">
+      <div class="row"><label>Theme</label>
+        <select class="field" id="set-theme"><option value="dark">Dark (midnight ink)</option><option value="light">Light (paper)</option></select></div>
+      <div class="row"><label>Editor font</label>
+        <select class="field" id="set-font">
+          <option>LM Mono Light</option><option>LM Mono</option><option>LM Mono Prop</option><option>LM Roman</option>
+          <option>JetBrainsMono Nerd Font</option><option>Iosevka Nerd Font</option></select></div>
+      <div class="row"><label>Preview font</label>
+        <select class="field" id="set-pfont"><option>LM Roman</option><option>LM Sans</option><option>LM Mono Light</option></select></div>
+      <div class="row"><label>Font size</label><input class="field" type="range" min="13" max="24" id="set-size"><span id="set-size-v"></span></div>
+      <div class="row"><label>Line spacing</label><input class="field" type="range" min="1.3" max="2.2" step="0.05" id="set-lh"><span id="set-lh-v"></span></div>
+      <div class="row"><label>Page turn animation</label><input type="checkbox" id="set-flip"></div>
+      <div class="row"><label>Data folder</label><span class="muted">~/gaussian_keep (plain files, a git repo)</span></div>
+      <div class="row"><label>Phone sync</label><span class="muted" id="set-sync-st">checking…</span><button class="btn tonal" id="set-sync"><span class="ms">sync</span> Sync now</button></div>
+    </div></div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+
+<!-- Greek & special characters (side sheet) -->
+<aside id="chars">
+  <div class="head"><span class="grow">Characters</span><button class="icon-btn" id="chars-close">close</button></div>
+  <div class="tabs" id="chars-tabs"></div>
+  <div class="grid" id="chars-grid"></div>
+  <div class="hint">Click to insert at the cursor. Works in text, tables, equations and code.</div>
+</aside>
+
+<!-- generic dialog -->
+<div class="dialog-bg" id="dialog-bg"><div class="dialog">
+  <div id="dialog-body"></div>
+  <div class="actions"><button class="btn ghost" id="dialog-cancel">Cancel</button><button class="btn primary" id="dialog-ok">OK</button></div>
+</div></div>
+
+<script src="/web/scratch.js"></script>
+<script src="/web/app.js"></script>
+</body>
+</html>

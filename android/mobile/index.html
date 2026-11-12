@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>gaussian_keep</title>
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="material.css">
+<link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+<header id="topbar">
+  <button class="icon-btn" id="back" title="Back">arrow_back</button>
+  <div id="top-title">Notes</div>
+  <button class="icon-btn" id="sync-btn" title="Sync with GitHub">cloud_done</button>
+  <button class="icon-btn" id="menu-btn" title="Menu">more_vert</button>
+</header>
+
+<!-- ⋮ menu -->
+<div id="menu-scrim"></div>
+<div id="menu">
+  <button data-m="sync"><span class="ms">sync</span><span><b>Sync now</b><small id="menu-sync-sub">with your laptop</small></span></button>
+  <button data-m="theme"><span class="ms" id="menu-theme-ic">light_mode</span><span><b id="menu-theme-t">Light theme</b></span></button>
+  <button data-m="settings"><span class="ms">settings</span><span><b>Settings</b><small>GitHub token, appearance</small></span></button>
+</div>
+
+<main id="screen"></main>
+
+<!-- scratchbook insert bar (shown while editing a scratchbook note) -->
+<div id="insertbar">
+  <button class="icon-btn" data-sb="heading" title="Heading">title</button>
+  <button class="icon-btn" data-sb="math" title="Equation">function</button>
+  <button class="icon-btn" data-sb="table" title="Table">table</button>
+  <button class="icon-btn" data-sb="csv" title="Import table">upload_file</button>
+  <button class="icon-btn" data-sb="code" title="Code">code_blocks</button>
+  <button class="icon-btn" data-sb="sketch" title="Shapes">shapes</button>
+  <button class="icon-btn" data-sb="quote" title="Quote">format_quote</button>
+  <button class="icon-btn" data-sb="cite" title="Cite a link">link</button>
+  <button class="icon-btn" data-sb="image" title="Image">image</button>
+  <button class="icon-btn" data-sb="divider" title="Divider">horizontal_rule</button>
+  <button class="icon-btn" id="chars-btn" title="Greek & symbols">Ω</button>
+</div>
+
+<button id="fab" title="New"><span class="ms">edit_square</span></button>
+
+<nav id="navbar">
+  <button data-tab="notes"><span class="ms">description</span><span>Notes</span></button>
+  <button data-tab="planner"><span class="ms">calendar_month</span><span>Planner</span></button>
+  <button data-tab="organizer"><span class="ms">dashboard</span><span>Organizer</span></button>
+  <button data-tab="journal"><span class="ms">menu_book</span><span>Journal</span></button>
+  <button data-tab="reminders"><span class="ms">notifications</span><span>Reminders</span></button>
+</nav>
+
+<!-- bottom sheet for characters -->
+<aside id="chars" class="sheet">
+  <div class="sheet-handle"></div>
+  <div class="tabs" id="chars-tabs"></div>
+  <div class="grid" id="chars-grid"></div>
+</aside>
+
+<div class="dialog-bg" id="dialog-bg"><div class="dialog">
+  <div id="dialog-body"></div>
+  <div class="actions"><button class="btn ghost" id="dialog-cancel">Cancel</button><button class="btn primary" id="dialog-ok">OK</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="file-image" accept="image/*" hidden>
+
+<script src="vendor/temml.min.js"></script>
+<script src="render.js"></script>
+<script src="store.js"></script>
+<script src="scratch.js"></script>
+<script src="mobile.js"></script>
+</body>
+</html>

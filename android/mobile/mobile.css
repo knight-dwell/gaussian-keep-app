@@ -1,0 +1,132 @@
+/* gaussian_keep on the phone: Material 3 mobile layout on top of app.css + material.css */
+@font-face { font-family: "Material Symbols Rounded"; src: url(fonts/MaterialSymbolsRounded.ttf); }
+@font-face { font-family: "JetBrainsMono Nerd Font"; src: url(fonts/JetBrainsMono.ttf); }
+
+html, body { height: 100%; }
+body { display: flex; flex-direction: column; overflow: hidden; font-family: "Roboto", "LM Sans", sans-serif; font-size: 16px;
+  -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
+button { -webkit-tap-highlight-color: transparent; }
+
+/* top app bar */
+#topbar { display: flex; align-items: center; gap: 4px; padding: 8px 6px 8px 12px; min-height: 64px; background: var(--md-surface); flex: none; }
+#top-title { flex: 1; font: 400 22px "Roboto", sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 4px; }
+#back { display: none; }
+body.sub #back { display: inline-block; }
+#sync-btn.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#screen { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 0 96px; position: relative; }
+
+/* bottom navigation bar */
+#navbar { display: flex; height: 80px; background: var(--md-surface-c); flex: none; padding: 0 4px; }
+#navbar button { flex: 1; border: 0; background: transparent; color: var(--muted); display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 4px; font: 500 12px "Roboto", sans-serif; }
+#navbar button .ms { width: 64px; height: 32px; border-radius: 16px; display: grid; place-items: center; transition: background .2s; }
+#navbar button.on { color: var(--md-on-surface); }
+#navbar button.on .ms { background: var(--md-secondary-container); color: var(--md-on-secondary-container); font-variation-settings: "FILL" 1; }
+body.sub #navbar { display: none; }
+
+/* floating action button */
+#fab { position: fixed; right: 16px; bottom: 96px; width: 56px; height: 56px; border-radius: 16px; border: 0; z-index: 20;
+  background: var(--md-primary-container); color: var(--md-on-primary-container); box-shadow: 0 4px 10px rgba(0,0,0,.35); }
+#fab .ms { font-size: 26px; }
+body.sub #fab, body.nofab #fab { display: none; }
+
+/* lists */
+.list { padding: 4px 12px; }
+.search { margin: 4px 16px 10px; display: flex; align-items: center; gap: 10px; background: var(--md-surface-high); border-radius: 28px; padding: 0 16px; height: 52px; }
+.search input { flex: 1; border: 0; background: transparent; outline: none; font-size: 16px; color: var(--text); }
+.item { display: flex; align-items: center; gap: 14px; padding: 14px 12px; border-radius: 16px; }
+.item:active { background: var(--md-surface-high); }
+.item .lead { width: 40px; height: 40px; border-radius: 20px; display: grid; place-items: center; background: var(--md-secondary-container); color: var(--md-on-secondary-container); flex: none; }
+.item .t { font-size: 16px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item .s { font-size: 13px; color: var(--muted); }
+.item .grow { min-width: 0; }
+.section-title { font: 500 14px "Roboto", sans-serif; color: var(--md-primary); padding: 16px 24px 4px; }
+.empty-state { text-align: center; color: var(--muted); padding: 60px 30px; }
+.empty-state .ms { font-size: 48px; display: block; margin-bottom: 10px; color: var(--faint); }
+
+/* note editor page */
+.note-page { padding: 6px 14px 20px; }
+#sb { display: block !important; padding: 8px 4px 140px; overflow: visible; }
+#sb .sb-inner { max-width: none; }
+#sb .sb-title { font-size: 28px; }
+.sb-doc { font-size: 18px; }
+.sb-island > .sb-ctl { opacity: 1; right: 0; top: -12px; }
+.sb-sketch-tools { overflow-x: auto; flex-wrap: nowrap; }
+.raw-editor { width: 100%; min-height: 60vh; border: 0; outline: 0; resize: none; background: transparent; color: var(--text);
+  font: 16px/1.7 "LM Mono Light", monospace; caret-color: var(--warm); }
+.typeset { font-size: 17px; }
+.seg { display: flex; background: var(--md-surface-high); border-radius: 20px; padding: 3px; margin: 6px 14px 10px; }
+.seg button { flex: 1; border: 0; border-radius: 17px; padding: 8px; background: transparent; color: var(--muted); font-weight: 500; }
+.seg button.on { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+
+#insertbar { display: none; overflow-x: auto; gap: 2px; padding: 6px 8px; background: var(--md-surface-c); flex: none; scrollbar-width: none; }
+#insertbar::-webkit-scrollbar { display: none; }
+body.editing-keep #insertbar { display: flex; }
+#insertbar .icon-btn { flex: none; width: 44px; height: 44px; }
+#chars-btn { font: 22px "LM Roman", serif !important; }
+
+/* characters bottom sheet */
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; max-height: 52vh; background: var(--md-surface-c); border-radius: 28px 28px 0 0;
+  box-shadow: 0 -6px 24px rgba(0,0,0,.4); transform: translateY(105%); transition: transform .25s cubic-bezier(.2,.8,.25,1); z-index: 50;
+  display: flex; flex-direction: column; top: auto; width: auto; }
+.sheet.open { transform: none; }
+.sheet-handle { width: 32px; height: 4px; border-radius: 2px; background: var(--md-outline); margin: 12px auto 6px; }
+#chars .tabs { display: flex; gap: 6px; padding: 4px 14px; overflow-x: auto; flex-wrap: nowrap; }
+#chars .tabs .chip { flex: none; }
+#chars .grid { flex: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; padding: 10px 14px 20px; }
+#chars .grid button { height: 46px; border: 0; border-radius: 12px; background: var(--md-surface-high); color: var(--text); font: 21px "LM Roman", serif; }
+
+/* cards (planner, organizer, reminders) */
+.card { margin: 10px 14px; border-radius: 16px; padding: 14px 16px; }
+.card h3 { font: 500 14px "Roboto", sans-serif; color: var(--md-primary); margin: 0 0 8px; font-style: normal; }
+.week { display: flex; gap: 6px; padding: 8px 14px 0; overflow-x: auto; }
+.week button { flex: 1; min-width: 44px; border: 0; background: var(--md-surface-c); border-radius: 16px; padding: 8px 2px; color: var(--muted); font-size: 12px; }
+.week button .d { display: block; font: 20px "LM Roman", serif; color: var(--text); }
+.week button.on { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+.week button.on .d { color: var(--md-on-primary-container); }
+.week button.today { outline: 2px solid var(--warm); outline-offset: -2px; }
+.row-input { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+.row-input input { flex: 1; min-width: 0; }
+.task { padding: 10px 2px; }
+.task .x { opacity: 1; }
+.board { columns: 2 150px; column-gap: 10px; padding: 8px 12px 40px; }
+.kcard { margin-bottom: 10px; }
+.kcard .actions { opacity: 1; flex-wrap: wrap; }
+.rem { margin: 8px 14px; }
+.rem .when { width: auto; min-width: 96px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-grid .full { grid-column: 1 / -1; }
+input.field, select.field, textarea.field { font-size: 16px; width: 100%; color: var(--text); }
+.btn { padding: 10px 20px; font-size: 14px; }
+
+/* settings */
+.settings-page { padding: 8px 18px 40px; display: flex; flex-direction: column; gap: 14px; }
+.settings-page label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 6px; }
+.help { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.help code { font-size: 12px; }
+.brand { display: flex; align-items: center; gap: 14px; margin-top: 10px; }
+.brand img { width: 56px; height: 56px; border-radius: 14px; }
+
+.dialog { width: min(560px, 94vw); }
+.toast { bottom: 100px; }
+
+/* overrides of laptop rules that do not fit a phone */
+main#screen { display: block; min-width: 0; }
+#chars.sheet { left: 0; right: 0; top: auto; bottom: 0; width: auto; border-radius: 28px 28px 0 0; transform: translateY(105%); }
+#chars.sheet.open { transform: none; }
+
+/* ⋮ menu (Material 3 menu) */
+#menu-scrim { position: fixed; inset: 0; z-index: 59; display: none; }
+#menu { position: fixed; top: 60px; right: 10px; z-index: 60; min-width: 240px; background: var(--md-surface-c); border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.45); padding: 8px 0; transform-origin: top right; transform: scale(.9); opacity: 0;
+  pointer-events: none; transition: transform .16s ease, opacity .16s ease; }
+body.menu-open #menu { transform: none; opacity: 1; pointer-events: auto; }
+body.menu-open #menu-scrim { display: block; }
+#menu button { display: flex; align-items: center; gap: 16px; width: 100%; border: 0; background: transparent; color: var(--text);
+  padding: 12px 18px; text-align: left; font: 15px "Roboto", sans-serif; }
+#menu button:active { background: var(--md-surface-high); }
+#menu button b { font-weight: 400; display: block; }
+#menu button small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+#menu .ms { color: var(--muted); }

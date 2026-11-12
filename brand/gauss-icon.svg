@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34558f"/><stop offset="1" stop-color="#1b305c"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.52" cy="0.42" r="0.5">
+      <stop offset="0" stop-color="#adc6ff" stop-opacity=".16"/><stop offset="1" stop-color="#adc6ff" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="frame"><rect width="512" height="512" rx="112"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="512" height="512" fill="url(#bg)"/>
+    <circle cx="266" cy="215" r="210" fill="url(#halo)"/>
+    <!-- Gaussian bell curve -->
+    <path d="M -10 452 C 110 452, 160 428, 196 330 C 226 246, 244 176, 262 176 C 280 176, 298 246, 328 330 C 364 428, 414 452, 522 452"
+          fill="none" stroke="#adc6ff" stroke-opacity=".30" stroke-width="9" stroke-linecap="round"/>
+    <!-- coat + shoulders -->
+    <path fill="#0b111c" d="M 52 530 C 58 470, 80 438, 124 420 C 160 406, 196 396, 214 384
+             L 330 384 C 350 396, 386 410, 412 422 C 444 438, 458 474, 462 530 Z"/>
+    <!-- high collar points + cravat (slightly lighter so they read) -->
+    <path fill="#16233a" d="M 222 372 C 236 392, 262 404, 292 404 C 312 404, 330 396, 340 386 L 350 352 C 330 372, 300 380, 276 376 C 254 372, 236 362, 224 352 Z"/>
+    <path fill="#16233a" d="M 268 404 C 274 424, 286 436, 300 440 C 312 430, 318 418, 316 402 Z"/>
+    <!-- head + face in profile (facing right), rounded skull, jaw into neck -->
+    <path fill="#0b111c" d="
+      M 196 214
+      C 200 196, 206 182, 214 172
+      C 222 154, 240 146, 264 146
+      C 300 146, 332 158, 340 184
+      C 346 196, 346 206, 342 214
+      C 348 224, 352 234, 354 244
+      C 360 254, 372 270, 384 292
+      C 388 300, 382 304, 368 305
+      C 372 312, 372 318, 366 322
+      C 371 327, 371 333, 365 337
+      C 368 350, 360 360, 346 364
+      C 330 368, 316 362, 304 354
+      C 300 362, 304 374, 316 384
+      L 232 384
+      C 236 370, 236 356, 228 344
+      C 206 330, 184 300, 182 264
+      C 180 240, 186 224, 196 214 Z"/>
+    <!-- the velvet cap (puffy, sitting back on the head) -->
+    <path fill="#0b111c" d="M 186 222 C 168 196, 176 152, 214 126 C 254 98, 316 100, 346 132
+             C 360 148, 358 168, 346 184 C 316 170, 270 166, 230 176 C 210 182, 196 200, 186 222 Z"/>
+    <path d="M 192 214 C 216 184, 280 166, 346 182" fill="none" stroke="#3c5f9e" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+    <path d="M 214 128 C 250 110, 300 108, 332 126" fill="none" stroke="#3c5f9e" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+    <!-- coat lapels (V shape) -->
+    <path fill="#16233a" d="M 222 392 C 236 410, 252 430, 262 452 L 282 530 L 238 530 C 226 480, 218 440, 206 400 Z"/>
+    <path fill="#16233a" d="M 336 392 C 324 412, 316 434, 312 456 L 300 530 L 346 530 C 356 480, 360 440, 360 404 Z"/>
+  </g>
+</svg>
